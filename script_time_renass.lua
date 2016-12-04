@@ -11,33 +11,33 @@
 -------------------------------------------- Informations ---------------------------------------------------
 -------------------------------------------------------------------------------------------------------------
 
--- Site  			          : http://renass.unistra.fr/ 
--- API XML  			      : http://renass.unistra.fr/fdsnws/event/1/query?latitude=46.6&longitude=1.9&maxradius=9&minmagnitude=1&orderby=time&starttime=2016-11-28&format=qml
--- API JSON 			      : http://renass.unistra.fr/fdsnws/event/1/query?latitude=46.6&longitude=1.9&maxradius=9&minmagnitude=1&orderby=time&starttime=2016-11-28&format=json
--- Post forum			      : https://easydomoticz.com/forum/viewtopic.php?f=17&t=2884
--- Script inspiré de 		: https://easydomoticz.com/forum/viewtopic.php?f=17&t=2310&p=20997&hilit=iss#p20997
+-- Site 		: http://renass.unistra.fr/ 
+-- API XML  		: http://renass.unistra.fr/fdsnws/event/1/query?latitude=46.6&longitude=1.9&maxradius=9&minmagnitude=1&orderby=time&starttime=2016-11-28&format=qml
+-- API JSON 		: http://renass.unistra.fr/fdsnws/event/1/query?latitude=46.6&longitude=1.9&maxradius=9&minmagnitude=1&orderby=time&starttime=2016-11-28&format=json
+-- Post forum		: https://easydomoticz.com/forum/viewtopic.php?f=17&t=2884
+-- Script inspiré de 	: https://easydomoticz.com/forum/viewtopic.php?f=17&t=2310&p=20997&hilit=iss#p20997
 
 -------------------------------------------------------------------------------------------------------------
 ----------------------------------------- Variables à Editer ------------------------------------------------
 -------------------------------------------------------------------------------------------------------------
 
-local Lat		        = "45.1439" 	-- Latitude de votre logement
-local Lon		        = "5.7206"  	-- Longitude de votre logement
-local Seisme_disp	  = "391"		    -- Idx du capteur virtuel
-local Ville		      = "Grenoble"  -- Lieu de résidence
-local Rayon		      = "1.5"    	  -- Rayon de détection des séismes
-local Magnitude 	  = "1"    	    -- Magnitude minimum de détection des séismes
-local Plage_horaire = "2" 		    -- Plage horaire de détection
-local Print_logs	  = true		    -- Affichage des données dans les logs
+local Lat		= "45.1439"	-- Latitude de votre logement
+local Lon		= "5.7206"	-- Longitude de votre logement
+local Seisme_disp	= "391"		-- Idx du capteur virtuel
+local Ville		= "Grenoble"	-- Lieu de résidence
+local Rayon		= "1.5"		-- Rayon de détection des séismes
+local Magnitude 	= "1"		-- Magnitude minimum de détection des séismes
+local Plage_horaire	= "2"		-- Plage horaire de détection
+local Print_logs	= true		-- Affichage des données dans les logs
  
 -------------------------------------------------------------------------------------------------------------
 ---------------------------------------- Variables de Travail -----------------------------------------------
 -------------------------------------------------------------------------------------------------------------
 
-year 		    = tonumber(os.date("%Y"));
-month 	    = tonumber(os.date("%m"));
-day 		    = tonumber(os.date("%d"));
-heure		    = tonumber(os.date("%H")) - tonumber (Plage_horaire);
+year		= tonumber(os.date("%Y"));
+month		= tonumber(os.date("%m"));
+day		= tonumber(os.date("%d"));
+heure		= tonumber(os.date("%H")) - tonumber (Plage_horaire);
 rayon_terre	= 6378
 
 --------------------------------------------------------------------------------------------------------------
@@ -80,9 +80,9 @@ if now.min % 30 == 0 then
 	  print('script_time_renass_json.lua')
 	
 	  -- Emplacement du fichier JSON.lua --
-      json = (loadfile "/home/pi/domoticz/scripts/lua/JSON.lua")()
-	  --json = (loadfile "D:\\Domoticz\\scripts\\lua\\json.lua")()  -- Windows
-      --json = (loadfile "/volume1/@appstore/domoticz/var/scripts/lua/JSON.lua")() -- Synology
+	json = (loadfile "/home/pi/domoticz/scripts/lua/JSON.lua")()
+	--json = (loadfile "D:\\Domoticz\\scripts\\lua\\json.lua")()  -- Windows
+	--json = (loadfile "/volume1/@appstore/domoticz/var/scripts/lua/JSON.lua")() -- Synology
 
 	  -- Decodage des données 
 	  local config=assert(io.popen('curl --connect-timeout 10 "http://renass.unistra.fr/fdsnws/event/1/query?latitude='.. Lat ..'&longitude='.. Lon ..'&maxradius='.. Rayon ..'&minmagnitude='.. Magnitude ..'&starttime='.. year ..'-'.. month ..'-'.. day ..'T'..heure..':00:00&orderby=time-asc&format=json"'))
@@ -97,26 +97,26 @@ if now.min % 30 == 0 then
 			localisation 	= resultat.geometry
 
 			 -- Récupération des propriétés --
-			local releve_brut		      = localisation ["coordinates"]	-- Localisation ( Chaîne )
-			local releve_description  = seisme ["description"]	      -- Description 
-			local releve_mode		      = seisme ["evaluationMode"] 	  -- Mode de récupération et validation du séisme par le RéNaSS ( Automatique ou Manuel )
-			local releve_magnitude		= seisme ["mag"]		            -- Magnitude
-			local releve_unitmag		  = seisme ["magtype"]		        -- Unité Magnitude
-			local releve_lieu		      = seisme ["place"]		          -- Pays d'origine			
-			local releve_date		      = seisme ["time"]		            -- Date et Heure (UTC) du séisme ( Chaîne )
-			local releve_url		      = seisme ["url"]		            -- URL page originale de l'événement
+			local releve_brut		= localisation ["coordinates"]	-- Localisation ( Chaîne )
+			local releve_description	= seisme ["description"]	-- Description 
+			local releve_mode		= seisme ["evaluationMode"]	-- Mode de récupération et validation du séisme par le RéNaSS ( Automatique ou Manuel )
+			local releve_magnitude		= seisme ["mag"]		-- Magnitude
+			local releve_unitmag		= seisme ["magtype"]		-- Unité Magnitude
+			local releve_lieu		= seisme ["place"]		-- Pays d'origine			
+			local releve_date		= seisme ["time"]		-- Date et Heure (UTC) du séisme ( Chaîne )
+			local releve_url		= seisme ["url"]		-- URL page originale de l'événement
 			
 			
 			
 			 -- Récupération de la localisation --
-			local releve_decode1 	= tostring (table.concat(releve_brut))
-			local lon, lat, pro	  = string.match (releve_decode1, "(%d+%p%d%d%d)(%d+%p%d%d%d)(.%d+)" )
+			local releve_decode1	= tostring (table.concat(releve_brut))
+			local lon, lat, pro	= string.match (releve_decode1, "(%d+%p%d%d%d)(%d+%p%d%d%d)(.%d+)" )
 			
 			 -- Récupération de l'heure --
-			local releve_decode2 = tostring (releve_date)
-			local h, m, s 		   = string.match (releve_decode2, "(%d+):(%d+):(%d%d)")
-			local releve_heure   = (tonumber (h) + 1)
-			local releve_minute	 = m
+			local releve_decode2	= tostring (releve_date)
+			local h, m, s		= string.match (releve_decode2, "(%d+):(%d+):(%d%d)")
+			local releve_heure	= (tonumber (h) + 1)
+			local releve_minute	= m
 			
 			logs ("Description = "..releve_description, Print_logs)
 			logs ("Magnitude = "..releve_magnitude, Print_logs)
@@ -127,18 +127,18 @@ if now.min % 30 == 0 then
 			logs ("Pays = "..releve_lieu, Print_logs)
 			
 			 -- Initialisation des variables --
-			local lat_a	  = tonumber(radian(Lat))
-			local lon_a 	= tonumber(radian(Lon))
-			local lat_b 	= tonumber(radian(lat))
-			local lon_b 	= tonumber(radian(lon))
+			local lat_a	= tonumber(radian(Lat))
+			local lon_a	= tonumber(radian(Lon))
+			local lat_b	= tonumber(radian(lat))
+			local lon_b	= tonumber(radian(lon))
 			 
 			 -- Calcul de la distance --
 			local distance_brut = rayon_terre * (math.pi/2 - math.asin( math.sin(lat_b) * math.sin(lat_a) + math.cos(lon_b - lon_a) * math.cos(lat_b) * math.cos(lat_a)))
 			 
 			 -- Calcul angle -- 
-			local dy = lat_b - lat_a
-			local dx = math.cos(math.pi/180*lat_a)*(lon_b - lon_a)
-			local angle = math.atan(dy/dx)
+			local dy	= lat_b - lat_a
+			local dx	= math.cos(math.pi/180*lat_a)*(lon_b - lon_a)
+			local angle	= math.atan(dy/dx)
 			 
 			 -- Calcul Azimuth --
 			 -- Quart Nord-Est --
