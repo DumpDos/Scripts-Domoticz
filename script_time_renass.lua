@@ -93,8 +93,8 @@ if now.min % 30 == 0 then
       -- Récupération des données --
       if jsondata ~= nil then 
             for i, resultat in pairs(jsondata.features) do
-            seisme	= resultat.properties
-			localisation 	= resultat.geometry
+		seisme		= resultat.properties
+		localisation 	= resultat.geometry
 
 			 -- Récupération des propriétés --
 			local releve_brut		= localisation ["coordinates"]	-- Localisation ( Chaîne )
