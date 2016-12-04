@@ -79,7 +79,7 @@ if now.min % 30 == 0 then
 	  -- Affichage d'éxécution --
 	  print('script_time_renass_json.lua')
 	
-	  -- Emplacement du fichier JSON.lua --
+	-- Emplacement du fichier JSON.lua --
 	json = (loadfile "/home/pi/domoticz/scripts/lua/JSON.lua")()
 	--json = (loadfile "D:\\Domoticz\\scripts\\lua\\json.lua")()  -- Windows
 	--json = (loadfile "/volume1/@appstore/domoticz/var/scripts/lua/JSON.lua")() -- Synology
