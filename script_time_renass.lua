@@ -11,24 +11,26 @@
 -------------------------------------------- Informations ---------------------------------------------------
 -------------------------------------------------------------------------------------------------------------
 
--- Site 		: http://renass.unistra.fr/ 
--- API XML  		: http://renass.unistra.fr/fdsnws/event/1/query?latitude=46.6&longitude=1.9&maxradius=9&minmagnitude=1&orderby=time&starttime=2016-11-28&format=qml
--- API JSON 		: http://renass.unistra.fr/fdsnws/event/1/query?latitude=46.6&longitude=1.9&maxradius=9&minmagnitude=1&orderby=time&starttime=2016-11-28&format=json
--- Post forum		: https://easydomoticz.com/forum/viewtopic.php?f=17&t=2884
+-- Site 				: http://renass.unistra.fr/ 
+-- API XML  			: http://renass.unistra.fr/fdsnws/event/1/query?latitude=46.6&longitude=1.9&maxradius=9&minmagnitude=1&orderby=time&starttime=2016-11-28&format=qml
+-- API JSON 			: http://renass.unistra.fr/fdsnws/event/1/query?latitude=46.6&longitude=1.9&maxradius=9&minmagnitude=1&orderby=time&starttime=2016-11-28&format=json
+-- Post forum			: https://easydomoticz.com/forum/viewtopic.php?f=17&t=2884
 -- Script inspiré de 	: https://easydomoticz.com/forum/viewtopic.php?f=17&t=2310&p=20997&hilit=iss#p20997
 
 -------------------------------------------------------------------------------------------------------------
 ----------------------------------------- Variables à Editer ------------------------------------------------
 -------------------------------------------------------------------------------------------------------------
 
-local Lat		= "45.1439"	-- Latitude de votre logement
-local Lon		= "5.7206"	-- Longitude de votre logement
-local Seisme_disp	= "391"		-- Idx du capteur virtuel
-local Ville		= "Grenoble"	-- Lieu de résidence
-local Rayon		= "1.5"		-- Rayon de détection des séismes
-local Magnitude 	= "1"		-- Magnitude minimum de détection des séismes
-local Plage_horaire	= "2"		-- Plage horaire de détection
-local Print_logs	= true		-- Affichage des données dans les logs
+local Lat				= "45.1439"		-- Latitude de votre logement
+local Lon				= "5.7206"		-- Longitude de votre logement
+local Seisme_disp		= "391"			-- Idx du capteur texte
+local Magnitude_disp	= "610"			-- Idx du capteur graphique magnitude
+local Distance_disp		= ""			-- Idx du capteur graphique	distance
+local Ville				= "Grenoble"	-- Lieu de résidence
+local Rayon				= "3"			-- Rayon de détection des séismes
+local Magnitude 		= "0.1"			-- Magnitude minimum de détection des séismes
+local Plage_horaire		= "2"			-- Plage horaire de détection
+local Print_logs		= true			-- Affichage des données dans les logs
  
 -------------------------------------------------------------------------------------------------------------
 ---------------------------------------- Variables de Travail -----------------------------------------------
@@ -36,10 +38,10 @@ local Print_logs	= true		-- Affichage des données dans les logs
 
 year		= tonumber(os.date("%Y"));
 month		= tonumber(os.date("%m"));
-day		= tonumber(os.date("%d"));
+day			= tonumber(os.date("%d"));
 heure		= tonumber(os.date("%H")) - tonumber (Plage_horaire);
 rayon_terre	= 6378
-
+rele		= 2,4
 --------------------------------------------------------------------------------------------------------------
 ---------------------------------------------- Fonctions -----------------------------------------------------
 --------------------------------------------------------------------------------------------------------------
@@ -60,7 +62,13 @@ function logs (x, Print_logs)
 	 if (Print_logs) then
      print (x)
 	 end 
-end	 
+end
+
+-- Fonction mise à jour des capteurs virtuels --
+function update(idx, valeur1)
+    local commande = string.format("%d|0|%.2f", idx, valeur1 )
+    table.insert (commandArray, { ['UpdateDevice'] = commande } )
+end
 
 --------------------------------------------------------------------------------------------------------------
 ------------------------------------------------ Fin ---------------------------------------------------------
@@ -71,7 +79,7 @@ commandArray = {}
 now = os.date("*t")
 
 -- Execution du script toutes les 30 minutes --
-if now.min % 30 == 0 then
+if now.min % 1 == 0 then
 	
 	-- Vérification des conditions --
 	if Lat ~= nil and Lon ~= nil and  Ville ~= nil and Seisme_disp ~= nil then
@@ -93,24 +101,24 @@ if now.min % 30 == 0 then
       -- Récupération des données --
       if jsondata ~= nil then 
             for i, resultat in pairs(jsondata.features) do
-		seisme		= resultat.properties
+		seisme			= resultat.properties
 		localisation 	= resultat.geometry
 
 			 -- Récupération des propriétés --
-			local releve_brut		= localisation ["coordinates"]	-- Localisation ( Chaîne )
+			local releve_brut			= localisation ["coordinates"]	-- Localisation ( Chaîne )
 			local releve_description	= seisme ["description"]	-- Description 
-			local releve_mode		= seisme ["evaluationMode"]	-- Mode de récupération et validation du séisme par le RéNaSS ( Automatique ou Manuel )
+			local releve_mode			= seisme ["evaluationMode"]	-- Mode de récupération et validation du séisme par le RéNaSS ( Automatique ou Manuel )
 			local releve_magnitude		= seisme ["mag"]		-- Magnitude
 			local releve_unitmag		= seisme ["magtype"]		-- Unité Magnitude
-			local releve_lieu		= seisme ["place"]		-- Pays d'origine			
-			local releve_date		= seisme ["time"]		-- Date et Heure (UTC) du séisme ( Chaîne )
-			local releve_url		= seisme ["url"]		-- URL page originale de l'événement
+			local releve_lieu			= seisme ["place"]		-- Pays d'origine			
+			local releve_date			= seisme ["time"]		-- Date et Heure (UTC) du séisme ( Chaîne )
+			local releve_url			= seisme ["url"]		-- URL page originale de l'événement
 			
 			
 			
 			 -- Récupération de la localisation --
-			local releve_decode1	= tostring (table.concat(releve_brut))
-			local lon, lat, pro	= string.match (releve_decode1, "(%d+%p%d%d%d)(%d+%p%d%d%d)(.%d+)" )
+			local releve_decode1	= table.concat(releve_brut, ",")
+			local lon, lat, pro		= string.match (releve_decode1, "(%d+%p%d+),(%d+%p%d+),(.%d+)" )
 			
 			 -- Récupération de l'heure --
 			local releve_decode2	= tostring (releve_date)
@@ -118,6 +126,7 @@ if now.min % 30 == 0 then
 			local releve_heure	= (tonumber (h) + 1)
 			local releve_minute	= m
 			
+			logs ("Test = "..releve_decode1, Print_logs)
 			logs ("Description = "..releve_description, Print_logs)
 			logs ("Magnitude = "..releve_magnitude, Print_logs)
 			logs ("Latitude = "..lat, Print_logs)
@@ -261,6 +270,23 @@ if now.min % 30 == 0 then
 			
 			 -- Mise à jour du capteur virtuel -- 
 			commandArray['UpdateDevice']= Seisme_disp ..'|0|'..'Événement de magnitude : '..releve_magnitude..' '..releve_unitmag..', Profondeur : '..pro..' km, '..releve_heure..' h '..releve_minute..', '..distance..' km '..direction..' ('..azimuth..'°) de '..Ville..', '..releve_validation
+				 
+				 -- Vérification des conditions --
+				if Magnitude_disp ~= nil then
+					 
+					 -- Mise à jour du capteur virtuel --
+					 update(Magnitude_disp, releve_magnitude)
+					 
+				end
+				
+				 -- Vérification des conditions --
+				if Distance_disp ~= nil then
+					 
+					 -- Mise à jour du capteur virtuel --
+					 update(Distance_disp, distance)
+					 
+				end
+				
 			end
 	  end
 	  
