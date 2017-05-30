@@ -78,7 +78,7 @@ commandArray = {}
 now = os.date("*t")
 
 -- Execution du script toutes les 30 minutes --
-if now.min % 1 == 0 then
+if now.min % 30 == 0 then
 	
 	-- Vérification des conditions --
 	if Lat ~= nil and Lon ~= nil and  Ville ~= nil and Seisme_disp ~= nil then
