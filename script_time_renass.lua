@@ -23,14 +23,14 @@
 
 local Lat		= "45.0000"		-- Latitude de votre logement
 local Lon		= "5.0000"		-- Longitude de votre logement
+local Ville		= "Ville"		-- Lieu de résidence
+local Magnitude 	= "0.1"			-- Magnitude minimale de détection des séismes
+local Rayon		= "2"			-- Rayon de détection des séismes
+local Plage_horaire	= "2"			-- Plage horaire de détection
 local Seisme_disp	= ""			-- Idx du capteur texte
 local Magnitude_disp	= false			-- Idx du capteur graphique magnitude (false = Désactivé)
 local Distance_disp	= false			-- Idx du capteur graphique distance (false = Désactivé)
-local Ville		= "Ville"		-- Lieu de résidence
-local Rayon		= "2"			-- Rayon de détection des séismes
-local Magnitude 	= "0.1"			-- Magnitude minimale de détection des séismes
 local Magnitude_noti	= false			-- Magnitude minimale de notification (false = Désactivé)
-local Plage_horaire	= "2"			-- Plage horaire de détection
 local Print_logs	= true			-- Affichage des données dans les logs
  
 -------------------------------------------------------------------------------------------------------------
