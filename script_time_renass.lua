@@ -12,10 +12,10 @@
 -------------------------------------------------------------------------------------------------------------
 
 -- Site 		: http://renass.unistra.fr
--- API XML  		: http://renass.unistra.fr/fdsnws/event/1/query?latitude=46.6&longitude=1.9&maxradius=9&minmagnitude=1&orderby=time&starttime=2016-11-28&format=qml
--- API JSON 		: http://renass.unistra.fr/fdsnws/event/1/query?latitude=46.6&longitude=1.9&maxradius=9&minmagnitude=1&orderby=time&starttime=2016-11-28&format=json
+-- API XML  		: http://renass.unistra.fr/fdsnws/event/1/query?latitude=46.6&longitude=1.9&maxradius=9&minmagnitude=1&orderby=time&starttime=2016-11-28&endtime=2016-11-29&format=qml
+-- API JSON 		: http://renass.unistra.fr/fdsnws/event/1/query?latitude=46.6&longitude=1.9&maxradius=9&minmagnitude=1&orderby=time&starttime=2016-11-28&endtime=2016-11-29&format=json
 -- Post forum		: https://easydomoticz.com/forum/viewtopic.php?f=17&t=2884
--- Script inspiré de 	: https://easydomoticz.com/forum/viewtopic.php?f=17&t=2310&p=20997
+-- Script inspiré de 	: https://easydomoticz.com/forum/viewtopic.php?f=17&t=2310
 
 -------------------------------------------------------------------------------------------------------------
 ----------------------------------------- Variables à Editer ------------------------------------------------
