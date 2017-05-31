@@ -23,7 +23,7 @@
 
 local Lat		= "45.0000"		-- Latitude de votre logement
 local Lon		= "5.0000"		-- Longitude de votre logement
-local Seisme_disp	= "391"			-- Idx du capteur texte
+local Seisme_disp	= ""			-- Idx du capteur texte
 local Magnitude_disp	= false			-- Idx du capteur graphique magnitude (false = Désactivé)
 local Distance_disp	= false			-- Idx du capteur graphique distance (false = Désactivé)
 local Ville		= "Ville"		-- Lieu de résidence
