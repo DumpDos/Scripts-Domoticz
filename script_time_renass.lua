@@ -21,26 +21,28 @@
 ----------------------------------------- Variables à Editer ------------------------------------------------
 -------------------------------------------------------------------------------------------------------------
 
-local Lat		= "45.1000"		-- Latitude de votre logement
-local Lon		= "5.7000"		-- Longitude de votre logement
-local Seisme_disp	= ""			-- Idx du capteur texte
-local Magnitude_disp	= ""			-- Idx du capteur graphique magnitude
-local Distance_disp	= ""			-- Idx du capteur graphique distance
+local Lat		= "45.0000"		-- Latitude de votre logement
+local Lon		= "5.0000"		-- Longitude de votre logement
+local Seisme_disp	= "391"			-- Idx du capteur texte
+local Magnitude_disp	= false			-- Idx du capteur graphique magnitude (false = Désactivé)
+local Distance_disp	= false			-- Idx du capteur graphique distance (false = Désactivé)
 local Ville		= "Ville"		-- Lieu de résidence
-local Rayon		= "3"			-- Rayon de détection des séismes
-local Magnitude 	= "0.1"			-- Magnitude minimum de détection des séismes
+local Rayon		= "2"			-- Rayon de détection des séismes
+local Magnitude 	= "0.1"			-- Magnitude minimale de détection des séismes
+local Magnitude_noti	= false			-- Magnitude minimale de notification (false = Désactivé)
 local Plage_horaire	= "2"			-- Plage horaire de détection
 local Print_logs	= true			-- Affichage des données dans les logs
  
 -------------------------------------------------------------------------------------------------------------
 ---------------------------------------- Variables de Travail -----------------------------------------------
 -------------------------------------------------------------------------------------------------------------
-
+noti 		= tonumber(Magnitude_noti)
 year		= tonumber(os.date("%Y"));
 month		= tonumber(os.date("%m"));
 day		= tonumber(os.date("%d"));
 heure		= tonumber(os.date("%H")) - tonumber (Plage_horaire);
 rayon_terre	= 6378
+
 --------------------------------------------------------------------------------------------------------------
 ---------------------------------------------- Fonctions -----------------------------------------------------
 --------------------------------------------------------------------------------------------------------------
@@ -87,20 +89,20 @@ if now.min % 30 == 0 then
 	  print('script_time_renass_json.lua')
 	
 	-- Emplacement du fichier JSON.lua --
-	json = (loadfile "/home/pi/domoticz/scripts/lua/JSON.lua")() -- Raspberry Pi
+	json = (loadfile "/home/pi/domoticz/scripts/lua/JSON.lua")()
 	--json = (loadfile "D:\\Domoticz\\scripts\\lua\\json.lua")()  -- Windows
 	--json = (loadfile "/volume1/@appstore/domoticz/var/scripts/lua/JSON.lua")() -- Synology
 
 	  -- Decodage des données 
-	local config=assert(io.popen('curl --connect-timeout 10 "http://renass.unistra.fr/fdsnws/event/1/query?latitude='.. Lat ..'&longitude='.. Lon ..'&maxradius='.. Rayon ..'&minmagnitude='.. Magnitude ..'&starttime='.. year ..'-'.. month ..'-'.. day ..'T'..heure..':00:00&orderby=time-asc&format=json"'))
-      	local data     = config:read('*all')
-      	local jsondata = json:decode(data)
-      	config:close()
+      local config=assert(io.popen('curl --connect-timeout 10 "http://renass.unistra.fr/fdsnws/event/1/query?latitude='.. Lat ..'&longitude='.. Lon ..'&maxradius='.. Rayon ..'&minmagnitude='.. Magnitude ..'&starttime='.. year ..'-'.. month ..'-'.. day ..'T'..heure..':00:00&orderby=time-asc&format=json"'))
+      local data     = config:read('*all')
+      local jsondata = json:decode(data)
+      config:close()
 		 
       -- Récupération des données --
       if jsondata ~= nil then 
             for i, resultat in pairs(jsondata.features) do
-		seisme		= resultat.properties
+		seisme			= resultat.properties
 		localisation 	= resultat.geometry
 
 			 -- Récupération des propriétés --
@@ -125,7 +127,7 @@ if now.min % 30 == 0 then
 			local releve_heure	= (tonumber (h) + 1)
 			local releve_minute	= m
 			
-			 -- Affichage des logs --
+			 -- Affichage des données dans logs --
 			logs ("Description = "..releve_description, Print_logs)
 			logs ("Magnitude = "..releve_magnitude, Print_logs)
 			logs ("Latitude = "..lat, Print_logs)
@@ -246,7 +248,7 @@ if now.min % 30 == 0 then
 			 
 			end
 			
-			-- Récupération Validation séisme --
+			-- Récupération validation séisme --
 			if releve_mode == "manual" then
 			
 				releve_validation = "Validé"
@@ -261,6 +263,7 @@ if now.min % 30 == 0 then
 			 -- Arrondi valeur distance --
 			local distance = arrondi(distance_brut,1)
 
+			 -- Affichage des données dans logs --
 			logs ("Distance = "..distance.." km", Print_logs)
 			logs ("Azimuth = "..azimuth.." °", Print_logs)
 			logs ("Point de compas = "..direction, Print_logs)
@@ -271,7 +274,7 @@ if now.min % 30 == 0 then
 			commandArray['UpdateDevice']= Seisme_disp ..'|0|'..'Événement de magnitude : '..releve_magnitude..' '..releve_unitmag..', Profondeur : '..pro..' km, '..releve_heure..' h '..releve_minute..', '..distance..' km '..direction..' ('..azimuth..'°) de '..Ville..', '..releve_validation
 				 
 				 -- Vérification des conditions --
-				if Magnitude_disp ~= nil then
+				if Magnitude_disp ~= false then
 					 
 					 -- Mise à jour du capteur virtuel --
 					 update(Magnitude_disp, releve_magnitude)
@@ -279,13 +282,20 @@ if now.min % 30 == 0 then
 				end
 				
 				 -- Vérification des conditions --
-				if Distance_disp ~= nil then
+				if Distance_disp ~= false then
 					 
 					 -- Mise à jour du capteur virtuel --
 					 update(Distance_disp, distance)
 					 
 				end
 				
+				 -- Vérification des conditions
+				if (Magnitude_noti ~= false) and (releve_magnitude >= noti) then
+				
+				 	 -- Envoi de la notification --
+				 	commandArray['SendNotification'] = 'Séisme#Événement de magnitude : '..releve_magnitude..' '..releve_unitmag..', Profondeur : '..pro..' km, '..releve_heure..' h '..releve_minute..', '..distance..' km '..direction..' ('..azimuth..'°) de '..Ville..', '..releve_validation..''
+				
+				end
 			end
 	  end
 	  
