@@ -5,7 +5,7 @@
 -- Ce script est dédié à la récupération des données fournies par le ------
 -- site Air Rhône-Alpes ---------------------------------------------------
 ---------------------------------------------------------------------------
--- Attention ce script fonctionne uniquement en région Rhône-Alpes !-------
+-- Attention ce script fonctionne uniquement pour la région Rhône-Alpes !--
 ---------------------------------------------------------------------------
 
 
