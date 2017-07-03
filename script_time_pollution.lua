@@ -5,30 +5,32 @@
 -- Ce script est dédié à la récupération des données fournies par le ------
 -- site Air Rhône-Alpes ---------------------------------------------------
 ---------------------------------------------------------------------------
+-- Attention ce script fonctionne uniquement en région Rhône-Alpes !-------
+---------------------------------------------------------------------------
 
 
 -------------------------------------------------------------------------------------------------------------
 -------------------------------------------- Informations ---------------------------------------------------
 -------------------------------------------------------------------------------------------------------------
 
--- Site 				: http://www.air-rhonealpes.fr/
+-- Site 		: http://www.air-rhonealpes.fr
 -- Script inspiré de 	: https://easydomoticz.com/forum/viewtopic.php?f=17&t=2006
 
 -------------------------------------------------------------------------------------------------------------
 ----------------------------------------- Variables à Editer ------------------------------------------------
 -------------------------------------------------------------------------------------------------------------
 
-local send_notification	= 3			-- Niveau de déclenchement des notifications
+local send_notification	= 3		-- Niveau de déclenchement des notifications
 local pollution_disp	= "392"		-- Idx de l'afficheur virtuel
-local code_ville 		= "38185"	-- Code Insee de la commaune
-local Print_logs		= true		-- Affichage des données dans les logs
+local code_ville 	= "38185"	-- Code Insee de la commaune
+local Print_logs	= true		-- Affichage des données dans les logs
 
 
 -------------------------------------------------------------------------------------------------------------
 ---------------------------------------- Variables de Travail -----------------------------------------------
 -------------------------------------------------------------------------------------------------------------
 
-local fichier			= "pollution.xml"
+local fichier			= "pollution_airRA.xml"
 local code_insee		= tostring(code_ville)
 
 --------------------------------------------------------------------------------------------------------------
@@ -73,50 +75,76 @@ print('script_time_pollution.lua')
 	 
 	 logs ("Niveau de pollution = "..indice.."/100", Print_logs)
 	 
+	-- Initialisation des variables --
 	 local niveau = tonumber(indice)
-	 
-	  if niveau <= 25 then 
-        if pollution_disp ~= nil then
-          commandArray['UpdateDevice'] = pollution_disp..'|1|Niveau de pollution faible'
+	
+    -- Vérification des conditions niveau 1 --  
+    if niveau <= 25 then 
+	
+        -- Mise à jour capteur virtuel --
+	if pollution_disp ~= nil then
+         commandArray['UpdateDevice'] = pollution_disp..'|1|Niveau de pollution faible'
         end
-        if send_notification > 0 and send_notification < 2 then
-         -- commandArray['SendNotification'] = 'Pollution#Niveau de pollution faible'
+        
+	-- Envoi notification --
+	if send_notification > 0 and send_notification < 2 then
+         commandArray['SendNotification'] = 'Pollution#Niveau de pollution faible'
         end
+	-- Affichage des données dans logs --
         logs(" Niveau de pollution faible ", Print_logs)
 
-       
-      elseif niveau <= 50 and niveau > 25   then 
+    -- Vérification des conditions niveau 2 --
+    elseif niveau <= 50 and niveau > 25   then 
+	
+	-- Mise à jour capteur virtuel --
         if pollution_disp ~= nil then
-          commandArray['UpdateDevice'] = pollution_disp..'|2|Niveau de pollution moyen'
+         commandArray['UpdateDevice'] = pollution_disp..'|2|Niveau de pollution moyen'
         end
+		
+	-- Envoi notification --
         if send_notification > 0 and send_notification < 3 then
-          --commandArray['SendNotification'] = 'Pollution#Niveau de pollution moyen'
+         commandArray['SendNotification'] = 'Pollution#Niveau de pollution moyen'
         end
-       logs("Niveau de pollution moyen", Print_logs)   
+		
+	-- Affichage des données dans logs --
+        logs("Niveau de pollution moyen", Print_logs)   
 
-
-      elseif niveau <= 75 and niveau > 50   then -- niveau 3
+    -- Vérification des conditions niveau 3 --
+    elseif niveau <= 75 and niveau > 50   then
+	
+	-- Mise à jour capteur virtuel --
         if pollution_disp ~= nil then
-          commandArray['UpdateDevice'] = pollution_disp..'|3|Niveau de pollution élevé'
+         commandArray['UpdateDevice'] = pollution_disp..'|3|Niveau de pollution élevé'
         end
+		
+	-- Envoi notification --
         if send_notification > 0 and send_notification < 4 then
-          --commandArray['SendNotification'] = 'Pollution#Niveau de pollution élevé'
+         commandArray['SendNotification'] = 'Pollution#Niveau de pollution élevé'
         end
+		
+	-- Affichage des données dans logs --
         logs("Niveau de pollution élevé", Print_logs)     
 
-
-      elseif niveau <= 100 and niveau > 75   then 
+    -- Vérification des conditions niveau 4 --
+    elseif niveau <= 100 and niveau > 75   then
+	
+	-- Mise à jour capteur virtuel --
         if pollution_disp ~= nil then
-          commandArray['UpdateDevice'] = pollution_disp..'|4|Niveau de pollution très élevé'
+         commandArray['UpdateDevice'] = pollution_disp..'|4|Niveau de pollution très élevé'
         end
+		
+	-- Envoi notification --
         if send_notification > 0 and send_notification < 5 then
-         -- commandArray['SendNotification'] = 'Pollution#Niveau de pollution très élevé'
+         commandArray['SendNotification'] = 'Pollution#Niveau de pollution très élevé'
         end
+		
+		-- Affichage des données dans logs --
         logs("Niveau de pollution très élevé", Print_logs)
-
-      else
-        print("niveau non defini")
-      end      
+		
+    -- Verification des conditions niveau non défini --
+    else
+	 print("niveau non defini")
+    end      
 
 end 
 end
