@@ -1,9 +1,26 @@
 # Lua-Domoticz
 Scripts Lua pour Domoticz
 
+## Ampérage
+
+Script dédié au calcul approximatif de l'ampérage sur une installation.
+
+### Variables modifiables :
+
+- Capteurs
+- Afficheur ampérage
+
+### Utilisation :
+ 
+ ```
+Placez-le dans votre dossier scripts domoticz
+Modifiez les variables
+```
+
+
 ## Pollution
 
-Script destiné aux relevés de pollution en région Rhône-Alpes ( Pas Rhône-Alpes-Auvergne... )
+Script destiné aux relevés de pollution en région Rhône-Alpes ( Pas Rhône-Alpes-Auvergne... ).
 
 ### Variables modifiables :
 
@@ -20,7 +37,7 @@ Modifiez les variables
 
 ## Renass (Séismes)
 
-Ce script est dédié à la récupération des données de l'API du RéNASS,
+Ce script est dédié à la récupération des données de l'API du RéNASS.
 
 ### Variables modifiables :
 
