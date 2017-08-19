@@ -43,10 +43,10 @@ commandArray = {}
  
 	-- initialisation des variables
 	 watt, wattheure 	= string.match(otherdevices_svalues[compteur], "(%d+.%d*);(%d+.%d*)")
-	 tension1		= tonumber (otherdevices_svalues[tension])
+	 volt			= tonumber (otherdevices_svalues[tension])
 	 
 	 -- Calcul du courant -- 
-	 courant_brut = (watt/tension1)
+	 courant_brut = (watt/volt)
 	 
 	 -- Arrondi --
 	 courant = arrondi(courant_brut, 3)
