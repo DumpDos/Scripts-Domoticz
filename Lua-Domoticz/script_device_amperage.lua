@@ -14,7 +14,7 @@
 
 local compteur	= 'Compteur Général'	-- Capteur puissance en Watt /!\
 local tension	= 'Tension Secteur'	-- Capteur tension
-local afficheur	= 780			-- Afficheur virtuel ampérage
+local afficheur	= idx			-- Afficheur virtuel ampérage
 
 -------------------------------------------------------------------------------------------------------------
 ----------------------------------------------- Fonction ----------------------------------------------------
