@@ -13,8 +13,8 @@
 -------------------------------------------------------------------------------------------------------------
 
 local compteur	= 'Compteur Général'	-- Capteur puissance en Watt /!\
-local tension	= 'Tension Secteur'		-- Capteur tension
-local afficheur	= 780					-- Afficheur virtuel ampérage
+local tension	= 'Tension Secteur'	-- Capteur tension
+local afficheur	= 780			-- Afficheur virtuel ampérage
 
 -------------------------------------------------------------------------------------------------------------
 ----------------------------------------------- Fonction ----------------------------------------------------
@@ -39,11 +39,11 @@ end
 commandArray = {}
 
 -- Vérification des conditions --
- if	 devicechanged[compteur] then
+ if devicechanged[compteur] then
  
 	-- initialisation des variables
 	 watt, wattheure 	= string.match(otherdevices_svalues[compteur], "(%d+.%d*);(%d+.%d*)")
-	 tension1			= tonumber (otherdevices_svalues[tension])
+	 tension1		= tonumber (otherdevices_svalues[tension])
 	 
 	 -- Calcul du courant -- 
 	 courant_brut = (watt/tension1)
