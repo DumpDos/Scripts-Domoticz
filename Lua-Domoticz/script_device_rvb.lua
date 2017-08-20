@@ -58,7 +58,7 @@ end
 commandArray = {}
 
 -- Vérification des conditions --
- if	 devicechanged[controler] then
+ if devicechanged[controler] then
 
 	 hex_rvb("#ff9a15")
 	 -- Changement état leds rouge --
