@@ -55,7 +55,7 @@ Ce script est dédié au retour d'état des ampoules hue dans domoticz
 ### Variables modifiables :
 
 - IDX
-- IP
+- Ip
 
 ### Utilisation :
  
