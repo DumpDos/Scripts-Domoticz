@@ -48,3 +48,17 @@ Ce script est dédié au contrôle des variateurs domoticz
 chmod +x device_control_dimmer.sh
 ./device_control_dimmer.sh <idx> <level>
 ```
+## Hue State
+
+Ce script est dédié au retour d'état des ampoules hue dans domoticz
+
+### Variables modifiables :
+
+- IDX
+- IP
+
+### Utilisation :
+ 
+ ```
+chmod +x hue_state.sh
+./hue_state.sh <idx groupe ampoules hue> <idx device domoticz>
