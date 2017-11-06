@@ -13,7 +13,7 @@
 
 local Print_logs	= true		-- Affichage des données dans les logs
 local OACI_code		= "LFLS"	-- Code OACI de l'aérodrome
-local Speed			= "KMH"		-- Unité vitesse KMH (Kilomètres par heure) ou KTS (Noeuds)
+local Speed		= "KMH"		-- Unité vitesse KMH (Kilomètres par heure) ou KTS (Noeuds)
 local Distance		= "KM"		-- Unité distace KM (Kilomètre) ou NM (Miles Nautique)
 local Pressure		= "HPA"		-- Unité pression atmosphérique HPA (Héctopacale) ou INHG (Pouce de mercure)
 
@@ -25,7 +25,7 @@ local fichier 		= "metar.xml"
 local kts_kmh 		= 1.852
 local inhg_hpa		= 33.86
 local test_st		= "-RA BR"
-local weather_table = {}
+local weather_table	= {}
 --------------------------------------------------------------------------------------------------------------
 ---------------------------------------------- Fonctions -----------------------------------------------------
 --------------------------------------------------------------------------------------------------------------
@@ -45,15 +45,15 @@ end
 
 -- Fonction type météo --
 function weather_type(wx_value)
-     if wx_value == "VC" then return "Au voisinage"
-     elseif wx_value == "MI" then return "Mince"
-     elseif wx_value == "PR" then return "Partiel"
-     elseif wx_value == "DR" then return "Chasse basse"
-     elseif wx_value == "BL" then return "Chasse haute"
-     elseif wx_value == "FZ" then return "Se congelant"
-     elseif wx_value == "RE" then return "Récent"
-     elseif wx_value == "BC" then return "Bancs"
-     elseif wx_value == "SH" then return "Averse"
+	 f wx_value == "VC" then return "Au voisinage"
+	 elseif wx_value == "MI" then return "Mince"
+	 elseif wx_value == "PR" then return "Partiel"
+ 	 elseif wx_value == "DR" then return "Chasse basse"
+	 elseif wx_value == "BL" then return "Chasse haute"
+     	 elseif wx_value == "FZ" then return "Se congelant"
+     	 elseif wx_value == "RE" then return "Récent"
+ 	 elseif wx_value == "BC" then return "Bancs"
+     	 elseif wx_value == "SH" then return "Averse"
 	 elseif wx_value == "XX" then return "Violent"
 	 elseif wx_value == "RA" then return "Pluie"
 	 elseif wx_value == "SN" then return "Neige"
@@ -77,7 +77,7 @@ function weather_type(wx_value)
 	 elseif wx_value == "SQ" then return "Ligne de grain"
 	 elseif wx_value == "FC" then return "Tornade"
 	 elseif wx_value == "TS" then return "Orage"
-     else return "Type météo non defini" end
+	 else return "Type météo non defini" end
 end
 
 --------------------------------------------------------------------------------------------------------------
