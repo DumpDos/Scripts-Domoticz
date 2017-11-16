@@ -32,7 +32,7 @@ local kts_kmh 		= 1.852
 local inhg_hpa		= 33.86
 local ft_m		= 0.3048
 local time_UTC		= 1
-local weather_table = {}
+local weather_table 	= {}
 
 --------------------------------------------------------------------------------------------------------------
 ---------------------------------------------- Fonctions -----------------------------------------------------
@@ -59,14 +59,14 @@ end
 
 -- Fonction conversion type météo --
 function weather_type(wx_value)
-     	if wx_value == "VC" then return "Au voisinage"
+     if wx_value == "VC" then return "Au voisinage"
      	elseif wx_value == "MI" then return "Mince"
-     	elseif wx_value == "PR" then return "Partiel"
-     	elseif wx_value == "DR" then return "Chasse basse"
-     	elseif wx_value == "BL" then return "Chasse haute"
+    	elseif wx_value == "PR" then return "Partiel"
+    	elseif wx_value == "DR" then return "Chasse basse"
+    	elseif wx_value == "BL" then return "Chasse haute"
      	elseif wx_value == "FZ" then return "Se congelant"
-     	elseif wx_value == "RE" then return "Récent"
-     	elseif wx_value == "BC" then return "Bancs"
+    	elseif wx_value == "RE" then return "Récent"
+    	elseif wx_value == "BC" then return "Bancs"
      	elseif wx_value == "SH" then return "Averse"
 	elseif wx_value == "XX" then return "Violent"
 	elseif wx_value == "RA" then return "Pluie"
@@ -91,43 +91,44 @@ function weather_type(wx_value)
 	elseif wx_value == "SQ" then return "Ligne de grain"
 	elseif wx_value == "FC" then return "Tornade" -- J'espère que cette ligne ne servira jamais
 	elseif wx_value == "TS" then return "Orage"
-     	else return "Type météo non defini" end
+     else return "Type météo non defini" end
 end
 
 -- Fonction conversion type nuage --
 function cloud_type(cloud_value)
-	if cloud_value == "CAVOK" 	 then return "Aucun signalement particulier"
+	if cloud_value == "CAVOK" then return "Aucun signalement particulier"
      	elseif cloud_value == "SKC" then return "Dégagé"
+	elseif cloud_value == "CLR" then return "Partielement dégagé"
 	elseif cloud_value == "NSC" then return "Nuages partiels"
      	elseif cloud_value == "FEW" then return "Nuages légés"
      	elseif cloud_value == "SCT" then return "Nuages épars"
      	elseif cloud_value == "BKN" then return "Nuages fragmentés"
      	elseif cloud_value == "OVC" then return "Couvert"
-	else return "Non défini" 
-	end
+	elseif cloud_value == "TCB" then return "Cumulonimbus en formation"
+	elseif cloud_value == "CB" then return "Cumulonimbus"
+	else return "Non défini" end
 end
 
 -- Fonction conversion azimuth --
 function azimuth(direction)
-	 if direction == 0 then return "Variable"
-	 elseif direction >= 1 and direction < 11.5 	then return "N"
-	 elseif direction >= 11.5 and direction < 34 	then return "NNE"
-	 elseif direction >= 34 and direction < 56.5 	then return "NE"
-	 elseif direction >= 56.5 and direction < 79 	then return "ENE"
-	 elseif direction >= 79 and direction < 101.5 	then return "E"
-	 elseif direction >= 101.5 and direction < 124 	then return "ESE"
-	 elseif direction >= 124 and direction < 146.5 	then return "SE"
-	 elseif direction >= 146.5 and direction < 169 	then return "SSE"
-	 elseif direction >= 169 and direction < 191.5 	then return "S"
-	 elseif direction >= 191.5 and direction < 214 	then return "SSO"
-	 elseif direction >= 214 and direction < 236.5 	then return "SO"
-	 elseif direction >= 236.5 and direction < 259 	then return "OSO"
-	 elseif direction >= 259 and direction < 281.5	then return "O"
-	 elseif direction >= 281.5 and direction < 304 	then return "ONO"
-	 elseif direction >= 304 and direction < 326.5 	then return "NO"
-	 elseif direction >= 326.5 and direction < 349 	then return "NON"
-	 elseif direction >= 349 and direction <= 360 	then return "N" 
-	 end
+	if direction == 0 then return "Variable"
+	elseif direction >= 1 and direction < 11.5 	then return "N"
+	elseif direction >= 11.5 and direction < 34 	then return "NNE"
+	elseif direction >= 34 and direction < 56.5 	then return "NE"
+	elseif direction >= 56.5 and direction < 79 	then return "ENE"
+	elseif direction >= 79 and direction < 101.5 	then return "E"
+	elseif direction >= 101.5 and direction < 124 	then return "ESE"
+	elseif direction >= 124 and direction < 146.5 	then return "SE"
+	elseif direction >= 146.5 and direction < 169 	then return "SSE"
+	elseif direction >= 169 and direction < 191.5 	then return "S"
+	elseif direction >= 191.5 and direction < 214 	then return "SSO"
+	elseif direction >= 214 and direction < 236.5 	then return "SO"
+	elseif direction >= 236.5 and direction < 259 	then return "OSO"
+	elseif direction >= 259 and direction < 281.5	then return "O"
+	elseif direction >= 281.5 and direction < 304 	then return "ONO"
+	elseif direction >= 304 and direction < 326.5 	then return "NO"
+	elseif direction >= 326.5 and direction < 349 	then return "NON"
+	elseif direction >= 349 and direction <= 360 	then return "N" end
 end
 
 --------------------------------------------------------------------------------------------------------------
@@ -173,6 +174,7 @@ print('script_time_metar.lua')
 	 local m = minute
 	 local s = second
 	 
+	 
 	 -- Conversion vitesse en kts ou Km/h --
 	 local kts = tonumber (obs_winspd)
 	 
@@ -184,7 +186,7 @@ print('script_time_metar.lua')
 			 wind_spd_raw 	= kts
 			 unite_spd 		= "Kts"
 		 end
-		 
+		
 		 local wind_spd = arrondi(wind_spd_raw,1)
 	 
 	 -- Conversion distance en Nm en Km --
@@ -200,7 +202,7 @@ print('script_time_metar.lua')
 		 end
 		 
 		 local visibil = arrondi(visibil_raw,1)
-		 
+
 	 -- Conversion pouce de mercure en hPa --
 	 local inhg = tonumber (obs_atmprs)
 	 
@@ -214,7 +216,7 @@ print('script_time_metar.lua')
 		 end
 		 
 		 local atm_pre = arrondi(atm_pre_raw,2)
-	 
+
 	 -- Conversion Azimuth --
 	 local wind_angle = tonumber (obs_windir)
 	 local wind_azimu = azimuth(wind_angle)
@@ -260,24 +262,27 @@ print('script_time_metar.lua')
 		 wx_phenomenon = false 
 	 end
 	 
-	 local cloud_var_raw = string.match (obs_skysta, 'sky_cover="(%a%a%a)"')
+	 local cloud_var_raw = string.match (obs_skysta, 'sky_cover="(%a+)"')
 	 local alt_var_raw	 = string.match (obs_skysta, 'cloud_base_ft_agl="(%d+)"')
 	 local cloud_var = cloud_type(cloud_var_raw)
 	 
-	 	 -- Conversion altitude en pied en mètre --
-	 local ft = tonumber (alt_var_raw)
-	 
-		 -- Vérification des conditions --
-		 if Altitude == "M" then
-			 altitude_raw 	= (ft * ft_m)
-			 unite_alt		= "m"
-		 else
-			 altitude_raw 	= ft
-			 unite_alt		= "ft"
+	 	 -- Vérification des conditions --
+		 if alt_var_raw ~= nil then
+			 -- Conversion altitude en pied en mètre --
+			 local ft = tonumber (alt_var_raw)
+			 
+				 -- Vérification des conditions --
+				 if Altitude == "M" then
+					 altitude_raw 	= (ft * ft_m)
+					 unite_alt		= "m"
+				 else
+					 altitude_raw 	= ft
+					 unite_alt		= "ft"
+				 end
+
+				 altitude = arrondi(altitude_raw,2)
 		 end
-		 
-		 local altitude = arrondi(altitude_raw,2)
-		 
+
 	 -- Affichage logs --
 	 logs ("-- METAR de "..obs_airp.." relevé le "..jour.."/"..mois.."/"..annee.." à "..h..":"..m.." --" , Print_logs)
 	 logs (obs_rawd, Print_logs)
@@ -305,12 +310,19 @@ print('script_time_metar.lua')
 	 if alt_var_raw ~= nil then
 		 if wx_phenomenon then
 	 
-			 commandArray['UpdateDevice']= Metar_disp ..'|0|'..''..h..':'..m..' Température : '..obs_temp..' °C, Point de rosée : '..obs_dewp..' °C, Pression : '..atm_pre..' '..unite_atm..', Vent : '..wind_spd..' '..unite_spd..', Provenance : '..wind_azimu..', Visibilité : '..visibil.." "..unite_dis..", Conditions : "..obs_flcate..", Ciel : " ..cloud_var.." à "..altitude..' '..unite_alt.."Phénomènes : "..wx_var_1..""..wx_var_2..""..wx_var_3..""..wx_var_4
+			 commandArray['UpdateDevice']= Metar_disp ..'|0|'..''..h..':'..m..', Température : '..obs_temp..' °C, Point de rosée : '..obs_dewp..' °C, Pression : '..atm_pre..' '..unite_atm..', Vent : '..wind_spd..' '..unite_spd..', Provenance : '..wind_azimu..', Visibilité : '..visibil.." "..unite_dis..", Conditions : "..obs_flcate..", Ciel : " ..cloud_var.." à "..altitude..' '..unite_alt..", Phénomènes : "..wx_var_1..""..wx_var_2..""..wx_var_3..""..wx_var_4
 		 else
 	 
-			 commandArray['UpdateDevice']= Metar_disp ..'|0|'..''..h..':'..m..' Température : '..obs_temp..' °C, Point de rosée : '..obs_dewp..' °C, Pression : '..atm_pre..' '..unite_atm..', Vent : '..wind_spd..' '..unite_spd..', Provenance : '..wind_azimu..', Visibilité : '..visibil.." "..unite_dis..", Conditions : "..obs_flcate..", Ciel : " ..cloud_var.." à "..altitude..' '..unite_alt
+			 commandArray['UpdateDevice']= Metar_disp ..'|0|'..''..h..':'..m..', Température : '..obs_temp..' °C, Point de rosée : '..obs_dewp..' °C, Pression : '..atm_pre..' '..unite_atm..', Vent : '..wind_spd..' '..unite_spd..', Provenance : '..wind_azimu..', Visibilité : '..visibil.." "..unite_dis..", Conditions : "..obs_flcate..", Ciel : " ..cloud_var.." à "..altitude..' '..unite_alt
 		 end
 	else
+		 if wx_phenomenon then
+	 
+			 commandArray['UpdateDevice']= Metar_disp ..'|0|'..''..h..':'..m..', Température : '..obs_temp..' °C, Point de rosée : '..obs_dewp..' °C, Pression : '..atm_pre..' '..unite_atm..', Vent : '..wind_spd..' '..unite_spd..', Provenance : '..wind_azimu..', Visibilité : '..visibil.." "..unite_dis..", Conditions : "..obs_flcate..", Ciel : " ..cloud_var..", Phénomènes : "..wx_var_1..""..wx_var_2..""..wx_var_3..""..wx_var_4
+		 else
+	 
+			 commandArray['UpdateDevice']= Metar_disp ..'|0|'..''..h..':'..m..', Température : '..obs_temp..' °C, Point de rosée : '..obs_dewp..' °C, Pression : '..atm_pre..' '..unite_atm..', Vent : '..wind_spd..' '..unite_spd..', Provenance : '..wind_azimu..', Visibilité : '..visibil.." "..unite_dis..", Conditions : "..obs_flcate..", Ciel : " ..cloud_var
+		 end
 	end
 end
 end
