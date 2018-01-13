@@ -21,17 +21,17 @@
 ----------------------------------------- Variables à Editer ------------------------------------------------
 -------------------------------------------------------------------------------------------------------------
 
-local Lat		= "45.0000"		-- Latitude de votre logement
-local Lon		= "5.0000"		-- Longitude de votre logement
-local Ville		= "Ville"		-- Lieu de résidence
-local Magnitude 	= "0.1"			-- Magnitude minimale de détection des séismes
-local Rayon		= "2"			-- Rayon de détection des séismes
-local Plage_horaire	= "2"			-- Plage horaire de détection
-local Seisme_disp	= ""			-- Idx du capteur texte
-local Magnitude_disp	= false			-- Idx du capteur graphique magnitude (false = Désactivé)
-local Distance_disp	= false			-- Idx du capteur graphique distance (false = Désactivé)
-local Magnitude_noti	= false			-- Magnitude minimale de notification (false = Désactivé)
-local Print_logs	= true			-- Affichage des données dans les logs
+local Lat		= "45.0000"	-- Latitude de votre logement
+local Lon		= "5.0000"	-- Longitude de votre logement
+local Ville		= "Ville"	-- Lieu de résidence
+local Magnitude 	= "0.1"		-- Magnitude minimale de détection des séismes
+local Rayon		= "2"		-- Rayon de détection des séismes
+local Plage_horaire	= "2"		-- Plage horaire de détection
+local Seisme_disp	= "391"		-- Idx du capteur texte
+local Magnitude_disp	= "610"		-- Idx du capteur graphique magnitude (false = Désactivé)
+local Distance_disp	= false		-- Idx du capteur graphique distance (false = Désactivé)
+local Magnitude_noti	= 4		-- Magnitude minimale de notification (false = Désactivé)
+local Print_logs	= false		-- Affichage des données dans les logs
  
 -------------------------------------------------------------------------------------------------------------
 ---------------------------------------- Variables de Travail -----------------------------------------------
@@ -80,7 +80,7 @@ commandArray = {}
 now = os.date("*t")
 
 -- Execution du script toutes les 30 minutes --
-if now.min % 30 == 0 then
+if now.min % 1 == 0 then
 	
 	-- Vérification des conditions --
 	if Lat ~= nil and Lon ~= nil and  Ville ~= nil and Seisme_disp ~= nil then
@@ -94,7 +94,7 @@ if now.min % 30 == 0 then
 	--json = (loadfile "/volume1/@appstore/domoticz/var/scripts/lua/JSON.lua")() -- Synology
 
 	  -- Decodage des données 
-      local config=assert(io.popen('curl --connect-timeout 10 "http://renass.unistra.fr/fdsnws/event/1/query?latitude='.. Lat ..'&longitude='.. Lon ..'&maxradius='.. Rayon ..'&minmagnitude='.. Magnitude ..'&starttime='.. year ..'-'.. month ..'-'.. day ..'T'..heure..':00:00&orderby=time-asc&format=json"'))
+      local config=assert(io.popen('curl --connect-timeout 10 "https://renass.unistra.fr/fdsnws/event/1/query?latitude='.. Lat ..'&longitude='.. Lon ..'&maxradius='.. Rayon ..'&minmagnitude='.. Magnitude ..'&starttime='.. year ..'-'.. month ..'-'.. day ..'T'..heure..':00:00&orderby=time-asc&format=json"'))
       local data     = config:read('*all')
       local jsondata = json:decode(data)
       config:close()
@@ -110,9 +110,10 @@ if now.min % 30 == 0 then
 			local releve_description	= seisme ["description"]	-- Description 
 			local releve_mode		= seisme ["evaluationMode"]	-- Mode de récupération et validation du séisme par le RéNaSS ( Automatique ou Manuel )
 			local releve_magnitude		= seisme ["mag"]		-- Magnitude
-			local releve_unitmag		= seisme ["magtype"]		-- Unité Magnitude
+			local releve_unitmag		= seisme ["magType"]		-- Unité Magnitude
 			local releve_lieu		= seisme ["place"]		-- Pays d'origine			
 			local releve_date		= seisme ["time"]		-- Date et Heure (UTC) du séisme ( Chaîne )
+			local releve_type		= seisme ["type"]		-- Relevé Type :  séisme / tir de carrière
 			local releve_url		= seisme ["url"]		-- URL page originale de l'événement
 			
 			
@@ -126,6 +127,14 @@ if now.min % 30 == 0 then
 			local h, m, s		= string.match (releve_decode2, "(%d+):(%d+):(%d%d)")
 			local releve_heure	= (tonumber (h) + 1)
 			local releve_minute	= m
+			
+			-- Récupération type de séisme --
+			if releve_type == "earthquake" then
+				 seisme_type = "Séisme"
+				 
+			elseif releve_type == "quarry blast" then
+				 seisme_type = "Tir de carrière"
+			end
 			
 			 -- Affichage des données dans logs --
 			logs ("Description = "..releve_description, Print_logs)
@@ -271,7 +280,7 @@ if now.min % 30 == 0 then
 			logs ("<a href="..releve_url.."> Page originale de l'événement </a>", Print_logs)
 			
 			 -- Mise à jour du capteur virtuel -- 
-			commandArray['UpdateDevice']= Seisme_disp ..'|0|'..'Événement de magnitude : '..releve_magnitude..' '..releve_unitmag..', Profondeur : '..pro..' km, '..releve_heure..' h '..releve_minute..', '..distance..' km '..direction..' ('..azimuth..'°) de '..Ville..', '..releve_validation
+			commandArray['UpdateDevice']= Seisme_disp ..'|0|'..''..seisme_type..' de magnitude : '..releve_magnitude..' '..releve_unitmag..', Profondeur : '..pro..' km, '..releve_heure..' h '..releve_minute..', '..distance..' km '..direction..' ('..azimuth..'°) de '..Ville..', '..releve_validation
 				 
 				 -- Vérification des conditions --
 				if Magnitude_disp ~= false then
