@@ -27,8 +27,8 @@ local Ville		= "Ville"	-- Lieu de résidence
 local Magnitude 	= "0.1"		-- Magnitude minimale de détection des séismes
 local Rayon		= "2"		-- Rayon de détection des séismes
 local Plage_horaire	= "2"		-- Plage horaire de détection
-local Seisme_disp	= "391"		-- Idx du capteur texte
-local Magnitude_disp	= "610"		-- Idx du capteur graphique magnitude (false = Désactivé)
+local Seisme_disp	= ""		-- Idx du capteur texte
+local Magnitude_disp	= ""		-- Idx du capteur graphique magnitude (false = Désactivé)
 local Distance_disp	= false		-- Idx du capteur graphique distance (false = Désactivé)
 local Magnitude_noti	= 4		-- Magnitude minimale de notification (false = Désactivé)
 local Print_logs	= false		-- Affichage des données dans les logs
