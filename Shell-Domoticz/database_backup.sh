@@ -3,7 +3,7 @@
 #=== DumpDos 2018 ===#
 
 #-- Variables --#
-dz_ip='192.168.xxx.xxx'
+dz_ip='127.0.0.1'
 dz_port='8080'
 
 nas_ip='192.168.xxx.xxx'
