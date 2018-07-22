@@ -48,6 +48,24 @@ Ce script est dédié au contrôle des variateurs domoticz
 chmod +x device_control_dimmer.sh
 ./device_control_dimmer.sh <idx> <level>
 ```
+## Database Backup
+
+Ce script est dédié à la sauvegarde de la base de donnée sur un support FTP
+
+### Variables modifiables :
+
+- Ip
+- Port
+- Utilisateur
+- Mot de passe
+- Emplacement fichiers
+
+### Utilisation :
+ 
+ ```
+chmod +x hue_state.sh
+./hue_state.sh <idx groupe ampoules hue> <idx device domoticz>
+
 ## Hue State
 
 Ce script est dédié au retour d'état des ampoules hue dans domoticz
@@ -60,5 +78,5 @@ Ce script est dédié au retour d'état des ampoules hue dans domoticz
 ### Utilisation :
  
  ```
-chmod +x hue_state.sh
-./hue_state.sh <idx groupe ampoules hue> <idx device domoticz>
+chmod +x database_backup.sh
+./database_backup.sh
