@@ -63,20 +63,7 @@ Ce script est dédié à la sauvegarde de la base de donnée sur un support FTP
 ### Utilisation :
  
  ```
-chmod +x hue_state.sh
-./hue_state.sh <idx groupe ampoules hue> <idx device domoticz>
-
-## Hue State
-
-Ce script est dédié au retour d'état des ampoules hue dans domoticz
-
-### Variables modifiables :
-
-- IDX
-- Ip
-
-### Utilisation :
- 
- ```
 chmod +x database_backup.sh
 ./database_backup.sh
+ ```
+ 
