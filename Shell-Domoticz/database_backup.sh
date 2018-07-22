@@ -1,4 +1,6 @@
 #!/bin/bash
+#=== database_backup.sh ===#
+#=== DumpDos 2018 ===#
 
 #-- Variables --#
 dz_ip='192.168.xxx.xxx'
