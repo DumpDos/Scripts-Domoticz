@@ -31,7 +31,7 @@ Ce script est dédié à la récupération de l'état des lampes hue
  
  ```
 chmod +x hue_state.sh
-./hue_state.sh
+./hue_state.sh <groupe de lampes> <id lampe>
 ```
 
 ## Device control
