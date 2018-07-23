@@ -18,6 +18,22 @@ chmod +x hue_control.sh
 ./hue_control.sh <temps de transition> <intensité> <température de couleur>
 ```
 
+## Hue State
+
+Ce script est dédié à la récupération de l'état des lampes hue
+
+### Variables modifiables :
+
+- Ip
+- Clé Api
+
+### Utilisation :
+ 
+ ```
+chmod +x hue_state.sh
+./hue_state.sh
+```
+
 ## Device control
 
 Ce script est dédié au contrôle des switch domoticz
