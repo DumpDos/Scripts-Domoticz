@@ -4,8 +4,8 @@
 #####################################################################
 
 # === Variables à éditer  === #
-IP1=192.168.0.16:80 		    #-- ip hue bridge
-IP2=192.168.0.11:8080		    #-- ip domoticz
+IP1=192.168.xxx.xxx:80		#-- ip hue bridge
+IP2=192.168.xxx.xxx:8080	#-- ip domoticz
 USER=0123456789abcdefghijkl	#-- clé api hue
 
 # === Variables de travail === #
