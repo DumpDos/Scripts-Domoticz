@@ -42,7 +42,7 @@ except IndexError:
 
 if fileName_0 == 'null':
     print "Erreur - arguments non-valides"
-    print "Utilisation: play_multi.py <time> <file 1> <file 2>..."
+    print "Utilisation: play_multi.py <délai> <fichier 1> <fichier 2>..."
     sys.exit()
 else:
 
@@ -75,4 +75,4 @@ if is_number(arg_time) == True:
 else:
 
     print "Erreur - Arguments"
-    print "Utilisation: play_multi.py <time> <file 1> <file 2>..."
+    print "Utilisation: play_multi.py <délai> <fichier 1> <fichier 2>..."
