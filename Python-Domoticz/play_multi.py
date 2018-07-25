@@ -10,7 +10,7 @@ import sys
 
 #--- Variables ---#
 
-ip		= "192.168.xx.xx"
+ip	= "192.168.xx.xx"
 mac 	= "xxxxxxxxxxxx"
 port    = 80
 timeout = "30"
