@@ -49,11 +49,8 @@ else:
     device = broadlink.rm((ip,port), mac, timeout)
     arg_list = list(sys.argv)
     arg_numb = len(sys.argv)
-    arg_time = arg_list[1]
+    var_time = 1
     var_agmt = 2
-
-if is_number(arg_time) == True:
-
 
     print "Connexion au module Broadlink..."
     device.auth()
@@ -67,10 +64,19 @@ if is_number(arg_time) == True:
 
 
     while not var_agmt == arg_numb:
-
-        read_file(arg_list[var_agmt], arg_time)
-        var_agmt = var_agmt + 1
-        print "Code envoyé"
+        
+        arg_time = arg_list[var_time]
+        
+        if is_number(arg_time) == True:
+            
+            var_time = var_time + 2
+            read_file(arg_list[var_agmt], arg_time)
+            var_agmt = var_agmt + 2
+            print "Code envoyé"
+        else if is_number == False:
+            print "Erreur - arguments non-valides"
+            print "Utilisation: play_multi.py <délai> <fichier 1> <fichier 2>..."
+            sys.exit()
 
 else:
 
