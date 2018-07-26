@@ -31,7 +31,6 @@ def is_number(var):
         return True
     except ValueError:
         return False
-
 #--- Script ---#
 
 try:
@@ -42,7 +41,7 @@ except IndexError:
 
 if fileName_0 == 'null':
     print "Erreur - arguments non-valides"
-    print "Utilisation: play_multi.py <délai> <fichier 1> <fichier 2>..."
+    print "Utilisation: play_multi.py <délai> <fichier 1> <délai> <fichier 2>..."
     sys.exit()
 else:
 
@@ -63,22 +62,21 @@ else:
 
 
 
-    while not var_agmt == arg_numb:
-        
+    while not var_time == arg_numb:
+
         arg_time = arg_list[var_time]
-        
+        var_code = arg_list[var_agmt]
+
         if is_number(arg_time) == True:
-            
+
+            read_file(var_code, arg_time)
             var_time = var_time + 2
-            read_file(arg_list[var_agmt], arg_time)
             var_agmt = var_agmt + 2
+            print arg_time, var_code
             print "Code envoyé"
-        else if is_number == False:
+
+        elif is_number == False:
+
             print "Erreur - arguments non-valides"
-            print "Utilisation: play_multi.py <délai> <fichier 1> <fichier 2>..."
+            print "Utilisation: play_multi.py <délai> <fichier 1> <délai> <fichier 2>..."
             sys.exit()
-
-else:
-
-    print "Erreur - Arguments"
-print "Utilisation: play_multi.py <délai> <fichier 1> <fichier 2>..."
