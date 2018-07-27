@@ -20,10 +20,10 @@ timeout = "30"
 def read_file(file, sleep):
 
     var_time = float(sleep)
+    time.sleep(var_time)
     data = open(file, 'r')
     myhex = data.read()
     device.send_data(myhex.decode('hex'))
-    time.sleep(var_time)
 
 def is_number(var):
     try:
