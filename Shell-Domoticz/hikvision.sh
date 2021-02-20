@@ -10,7 +10,7 @@ PWD=password
 
 # === Variables d'entrées === #
 _goto=null    #-- Position caméra
-_channel=1 #-- Canal caméra
+_channel=1    #-- Canal caméra
 
 #####################################################################$
 
